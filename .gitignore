@@ -1,0 +1,15 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+/.idea/
+/.vscode/
+
+# Docker volumes (PostgreSQL)
+docker-config/postgres/data/
+docker-config/postgres/logs/
+
+# Node
+node_modules/
+
+# Composer vendor is already ignored in webApp/.gitignore
+

@@ -1,0 +1,51 @@
+name: laravel-starter
+
+services:
+
+  # -------------------------------
+  # PHP-FPM コンテナ（Laravel）
+  # -------------------------------
+  web:
+    build: ./docker-config/php
+    # アプリケーションコードと php.ini をコンテナにマウント
+    volumes:
+      - ./webApp:/var/www
+      - ./docker-config/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - postgres
+    # restart: always  # 開発中はコメントアウト、本番は有効化推奨
+
+  # -------------------------------
+  # Nginx コンテナ（フロントサーバー）
+  # -------------------------------
+  nginx:
+    build: ./docker-config/nginx
+    # ホストのポート8888をコンテナの80番ポートにマッピング
+    ports:
+      - "8888:80"
+    # アプリケーションコードと Nginx 設定をマウント
+    volumes:
+      - ./webApp:/var/www
+      - ./docker-config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+    # restart: always  # 開発中はコメントアウト、本番は有効化推奨
+
+  # -------------------------------
+  # PostgreSQL コンテナ
+  # -------------------------------
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres      # DBユーザー名
+      POSTGRES_PASSWORD: postgres  # DBパスワード
+      POSTGRES_DB: main            # デフォルトDB名
+      TZ: "Asia/Tokyo"             # タイムゾーン設定
+    # ホスト側ポートとコンテナ側ポートをマッピング
+    ports:
+      - 54320:5432  # SQLクライアント用、ホスト側ポートを変更
+    # データ永続化
+    volumes:
+      - ./docker-config/postgres/data:/var/lib/postgresql/data
+      - ./docker-config/postgres/logs:/var/log
+    # restart: always  # 開発中はコメントアウト、本番は有効化推奨
