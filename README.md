@@ -12,10 +12,13 @@ docker compose up -d --build
 docker compose exec web composer install
 docker compose exec web php artisan migrate:fresh --force
 ```
+２回目以降は通常コンテナ起動コマンド(`docker compose up -d --build`)のみでOK
 
 ## 動作確認
 - ブラウザで `http://localhost:8888` を開く
 - Welcome 画面に「Database connection: CONNECTED」と表示されることを確認
+　 <img width="1375" height="631" alt="image" src="https://github.com/user-attachments/assets/0d627a18-1091-4d1c-9111-238e5d42e4e3" />
+
 
 ## 接続情報
 - App: `http://localhost:8888`
