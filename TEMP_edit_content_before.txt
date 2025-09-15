@@ -1,0 +1,29 @@
+@php($title = 'Edit Article #'.$article->id)
+@extends('layouts.base')
+
+@section('content')
+    <form action="{{ route('articles.update', $article) }}" method="post">
+        @csrf
+        @method('PUT')
+        <label>Title</label>
+        <input type="text" name="title" value="{{ old('title', $article->title) }}">
+        @error('title') <div class="small ng">{{ $message }}</div> @enderror
+
+        <label>Body</label>
+        <textarea name="body" rows="6">{{ old('body', $article->body) }}</textarea>
+        @error('body') <div class="small ng">{{ $message }}</div> @enderror
+
+        <label>Published At</label>
+        <input type="datetime-local" name="published_at" value="{{ old('published_at', optional($article->published_at)->format('Y-m-d\TH:i')) }}">
+        @error('published_at') <div class="small ng">{{ $message }}</div> @enderror
+
+        <label><input type="checkbox" name="is_published" value="1" {{ old('is_published', $article->is_published) ? 'checked' : '' }}> Published</label>
+
+        <div class="actions">
+            <button class="btn primary">Update</button>
+            <a class="btn" href="{{ route('articles.index') }}">Cancel</a>
+        </div>
+    </form>
+@endsection
+
+

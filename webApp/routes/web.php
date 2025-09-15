@@ -1,27 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes (clean skeleton)
+| Web Routes (learning CRUD)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    $status = 'error';
-    $error = null;
-    $dbName = null;
+Route::get('/', [InfoController::class, 'index'])->name('dashboard');
 
-    try {
-        DB::connection()->getPdo();
-        $status = 'connected';
-        $dbName = DB::connection()->getDatabaseName();
-    } catch (\Throwable $e) {
-        $error = $e->getMessage();
-    }
+Route::resource('articles', ArticleController::class);
 
-    return view('welcome', compact('status', 'error', 'dbName'));
-});
 
